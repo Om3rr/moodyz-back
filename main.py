@@ -4,7 +4,7 @@ from flask import jsonify, request
 from classes_repo import ClassesRepo
 
 
-@app.route("/classes", methods=["POST"])
+@app.route("/api/classes", methods=["POST"])
 def create_class():
     content = request.json
     class_name = content.get("class_name")
@@ -12,15 +12,15 @@ def create_class():
     return jsonify({"class": klass.to_dict()})
 
 
-@app.route('/classes/<class_id>/today', methods=["GET"])
+@app.route('/api/classes/<class_id>/today', methods=["GET"])
 def classes_today(class_id):
     return jsonify({
-        "votes": [vote.to_dict() for vote in ClassesRepo.get_votes(int(class_id))],
+        "votes": [vote.to_dict() for vote in ClassesRepo.get_todays_votes(int(class_id))],
         "class_id": class_id
     })
 
 
-@app.route("/classes/<class_id>/vote", methods=["POST"])
+@app.route("/api/classes/<class_id>/vote", methods=["POST"])
 def vote(class_id):
     content = request.json
     voter_choice = content.get("choice")

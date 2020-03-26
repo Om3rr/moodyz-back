@@ -6,7 +6,7 @@ class Vote(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     klass_id = db.Column(db.Integer, db.ForeignKey('klass.id'),
                          nullable=False)
-    name = db.Column(db.String)
+    name = db.Column(db.String(16))
     choice = db.Column(db.Integer)
     klass = db.relationship('Klass',
                             backref=db.backref('votes', lazy=True))

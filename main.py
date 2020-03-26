@@ -1,10 +1,21 @@
 from app import app
-from flask import jsonify, request
-
+from flask import jsonify, request, Blueprint, send_from_directory
+import os
 from classes_repo import ClassesRepo
 
+# Serve React App
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve(path):
+    if path != "" and os.path.exists(app.static_folder + '/' + path):
+        return send_from_directory(app.static_folder, path)
+    else:
+        return send_from_directory(app.static_folder, 'index.html')
 
-@app.route("/api/classes", methods=["POST"])
+
+
+api = Blueprint('api', __name__)
+@api.route("/classes", methods=["POST"])
 def create_class():
     content = request.json
     class_name = content.get("class_name")
@@ -12,7 +23,7 @@ def create_class():
     return jsonify({"class": klass.to_dict()})
 
 
-@app.route('/api/classes/<class_id>/today', methods=["GET"])
+@api.route('/classes/<class_id>/today', methods=["GET"])
 def classes_today(class_id):
     return jsonify({
         "votes": [vote.to_dict() for vote in ClassesRepo.get_todays_votes(int(class_id))],
@@ -20,7 +31,7 @@ def classes_today(class_id):
     })
 
 
-@app.route("/api/classes/<class_id>/vote", methods=["POST"])
+@api.route("/classes/<class_id>/vote", methods=["POST"])
 def vote(class_id):
     content = request.json
     voter_choice = content.get("choice")
@@ -28,7 +39,3 @@ def vote(class_id):
     ClassesRepo.vote(class_id, voter_choice, voter_name)
     return jsonify({"response": "OKAY :D"})
 
-
-@app.route('/')
-def hello_world():
-    return 'Hello, World!2'

@@ -6,16 +6,19 @@ class Vote(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     klass_id = db.Column(db.Integer, db.ForeignKey('klass.id'),
                          nullable=False)
+    student_id = db.Column(db.Integer, db.ForeignKey('student.id'))
     name = db.Column(db.String(16))
     choice = db.Column(db.Integer)
     klass = db.relationship('Klass',
                             backref=db.backref('votes', lazy=True))
+    student = db.relationship('Student',
+                              backref=db.backref('votes', lazy=True))
     pub_date = db.Column(db.DateTime, nullable=False,
                          default=datetime.utcnow)
 
     def to_dict(self):
         return dict(
-            name=self.name,
+            student=self.student.to_dict(),
             choice=self.choice,
             pub_date=self.pub_date
         )

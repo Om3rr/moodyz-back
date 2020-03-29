@@ -4,9 +4,9 @@ from datetime import datetime
 
 class Vote(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    klass_id = db.Column(db.Integer, db.ForeignKey('klass.id'),
+    klass_id = db.Column(db.Integer, db.ForeignKey('klass.id', ondelete='CASCADE'),
                          nullable=False)
-    student_id = db.Column(db.Integer, db.ForeignKey('student.id'))
+    student_id = db.Column(db.Integer, db.ForeignKey('student.id', ondelete='CASCADE'))
     name = db.Column(db.String(16))
     choice = db.Column(db.Integer)
     klass = db.relationship('Klass',

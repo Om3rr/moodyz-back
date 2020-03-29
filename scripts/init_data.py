@@ -2,13 +2,13 @@ import random
 
 from app import db
 from models import Teacher, Klass, Student, Vote
+from repos.teachers_repo import TeachersRepo
 
 k = Klass(title="Test Class 1")
 db.session.add(k)
 db.session.commit()
-t = Teacher(name="Omer Hamore", enc_password="aksdlkfalsdf", klass_id=k.id)
-db.session.add(t)
-db.session.commit()
+t = TeachersRepo.create_teacher(username="omers", password="password")
+k.teacher_id = k
 
 names = """Teddie Manning
 Teegan Mitchell

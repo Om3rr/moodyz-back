@@ -1,6 +1,7 @@
 import random, string
 
 from app import db
+from helpers.image_service import ProfilePicFetcher
 
 
 def gen_auth():
@@ -9,7 +10,7 @@ def gen_auth():
 
 class Student(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    klass_id = db.Column(db.Integer, db.ForeignKey('klass.id'),
+    klass_id = db.Column(db.Integer, db.ForeignKey('klass.id', ondelete='CASCADE'),
                          nullable=False)
     name = db.Column(db.String(128))
     klass = db.relationship('Klass',
@@ -17,9 +18,18 @@ class Student(db.Model):
     auth_token = db.Column(db.String(128), default=gen_auth)
     picture_url = db.Column(db.String(128))
 
-    def to_dict(self):
-        return dict(
+    def to_dict(self, with_klass=False):
+        d = dict(
             name=self.name,
-            klass=self.klass.to_dict(),
-            picture=self.picture_url
+            picture=self.picture_url,
+            face_url=self.face_url,
         )
+
+        if with_klass:
+            d.update(klass=self.klass.to_dict())
+        return d
+
+
+    @property
+    def face_url(self):
+        return ProfilePicFetcher.fetch(self.picture_url or "punbxmop1chipuxaylrs.png")

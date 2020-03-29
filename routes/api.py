@@ -3,6 +3,8 @@ from flask import Blueprint, request, jsonify
 from authorizers import authorize_student
 from repos.classes_repo import ClassesRepo
 from routes.api_routes.students import student_service
+from routes.api_routes.teachers import teachers_service
+import routes.api_routes.classes_service
 
 api = Blueprint('/api', __name__)
 
@@ -19,9 +21,10 @@ def create_class():
 @api.route('/classes/today', methods=["GET"])
 def classes_today():
     student = authorize_student(request)
-    votes = ClassesRepo.get_todays_votes(student.klass.id)
+    students = ClassesRepo.get_students_with_last_votes(student.klass.id)
+
     return jsonify({
-        "votes": [vote.to_dict() for vote in votes],
+        "votes": [vote.to_dict() for vote in students],
     })
 
 

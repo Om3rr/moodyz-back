@@ -1,6 +1,6 @@
-from flask import Blueprint, jsonify, request, redirect
+from flask import Blueprint, jsonify, request, redirect, abort
 from app import app
-from authorizers import authorize_student
+from authorizers import authorize_student, enhance_response_with_student_auth
 from repos.classes_repo import ClassesRepo
 from repos.students_repos import StudentRepo
 
@@ -12,9 +12,9 @@ def student_login():
     auth_token = request.args.get("pw")
     student = StudentRepo.get_student_by_auth(auth_token)
     if not student:
-        return jsonify({"error": "Not Found"}, 400)
+        return abort(400)
     res = redirect(student.klass.url)
-    res.set_cookie("student", student.auth_token)
+    enhance_response_with_student_auth(res, student)
     return res
 
 
@@ -41,8 +41,8 @@ def vote():
     body = request.json
     choice = body.get("choice")
     ClassesRepo.edit_or_create_vote(student.id, klass.id, choice)
-    votes = ClassesRepo.get_todays_votes(klass.id)
-    return jsonify({"votes": [v.to_dict() for v in votes]})
+    res = ClassesRepo.get_todays_response(klass.id)
+    return jsonify({"students": res})
 
 
 app.register_blueprint(student_service, url_prefix="/api/students")

@@ -3,3 +3,6 @@ Flask-SQLAlchemy
 gunicorn
 python-dotenv
 mysqlclient
+cloudinary
+Pillow
+cryptography

@@ -1,7 +1,7 @@
 import requests
 
 from app import app
-from flask import send_from_directory, jsonify, request, abort, redirect
+from flask import send_from_directory, jsonify, request, abort, redirect, make_response
 from authorizers import enhance_response_with_student_auth
 from repos.students_repos import StudentRepo
 from routes.api import api as api_service
@@ -16,9 +16,9 @@ def login():
     student = StudentRepo.get_student_by_auth(auth_token)
     if not student:
         return abort(400)
-    res = redirect(student.klass.url)
+    res = redirect("/classes/{}".format(student.klass_id))
     enhance_response_with_student_auth(res, student)
-    return redirect("/classes/{}".format(student.klass_id))
+    return res
 
 #Serve React App
 @app.route('/', defaults={'path': ''})
@@ -29,7 +29,10 @@ def serve(path):
     fullpath = "{}/{}".format(os.getenv("WEBVIEW_URL"), path)
     print("GET {}".format(fullpath))
     res = requests.get(fullpath)
-    return res.content, res.status_code
+    resp = make_response(res.content)
+    for key, value in res.headers.items():
+        resp.headers[key] = value
+    return resp
 
 
 @app.errorhandler(404)

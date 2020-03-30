@@ -1,6 +1,7 @@
+import requests
+
 from app import app
 from flask import send_from_directory, jsonify, request, abort, redirect
-
 from authorizers import enhance_response_with_student_auth
 from repos.students_repos import StudentRepo
 from routes.api import api as api_service
@@ -17,18 +18,19 @@ def login():
         return abort(400)
     res = redirect(student.klass.url)
     enhance_response_with_student_auth(res, student)
-    return redirect("http://localhost:3000/classes/{}".format(student.klass_id))
+    return redirect("/classes/{}".format(student.klass_id))
 
-# Serve React App
+#Serve React App
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def serve(path):
-    if path != "" and os.path.exists(app.static_folder + '/' + path):
-        return send_from_directory(app.static_folder, path)
-    elif path != "" and os.path.exists(app.template_folder + "/" + path):
-        return send_from_directory(app.template_folder, path)
-    else:
-        return send_from_directory(app.template_folder, 'index.html')
+    if "api/" in path:
+        abort(404)
+    fullpath = "{}/{}".format(os.getenv("WEBVIEW_URL"), path)
+    print("GET {}".format(fullpath))
+    res = requests.get(fullpath)
+    return res.content, res.status_code
+
 
 @app.errorhandler(404)
 def page_not_found(error):

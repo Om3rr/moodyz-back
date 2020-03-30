@@ -6,3 +6,4 @@ mysqlclient
 cloudinary
 Pillow
 cryptography
+requests

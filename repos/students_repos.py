@@ -13,7 +13,7 @@ class StudentRepo(object):
         s = db.session.query(Student).filter(Student.name == name).first()
         if s:
             raise Exception("Student name already exists")
-        student = Student(name=name, klass_id=klass_id, picture=picture)
+        student = Student(name=name, klass_id=klass_id, picture_url=picture)
         db.session.add(student)
         db.session.commit()
         return student

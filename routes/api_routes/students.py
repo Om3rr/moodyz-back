@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request, redirect, abort
 from app import app
-from authorizers import authorize_student, enhance_response_with_student_auth
+from authorizers import authorize_student, enhance_response_with_student_auth, authorize_teacher
 from repos.classes_repo import ClassesRepo
 from repos.students_repos import StudentRepo
 
@@ -20,11 +20,11 @@ def student_login():
 
 @student_service.route("/", methods=["POST"])
 def create_student():
-    content = request.json
-    klass_slug = content.get("klass")
-    klass = ClassesRepo.get_by_slug(klass_slug)
-    name = content.get("name")
-    student = StudentRepo.create_student(name, "", klass.id)
+    teacher = authorize_teacher(request)
+    student_json = request.json.get("student")
+    name = student_json.get("name")
+    picture_id = student_json.get("pictureId")
+    student = StudentRepo.create_student(name, picture_id, teacher.klasses[0].id)
     return jsonify({"student": student.to_dict()})
 
 

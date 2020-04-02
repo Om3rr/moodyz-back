@@ -48,8 +48,6 @@ def serve(path):
         abort(404)
     fullpath = "{}/{}".format(os.getenv("WEBVIEW_URL"), path)
     res = requests.get(fullpath)
-    print(res.content)
-    print(res.status_code)
     resp = make_response(res.content)
     for key, value in res.headers.items():
         if key not in PROXY_HEADERS:

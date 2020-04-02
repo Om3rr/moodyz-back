@@ -47,7 +47,7 @@ def serve(path):
     if "api/" in path:
         abort(404)
     fullpath = "{}/{}".format(os.getenv("WEBVIEW_URL"), path)
-    res = requests.get(fullpath, headers=request.headers)
+    res = requests.get(fullpath)
     print(res.content)
     print(res.status_code)
     resp = make_response(res.content)

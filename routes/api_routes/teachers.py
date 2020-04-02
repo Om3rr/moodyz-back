@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from app import app
-from authorizers import authorize_student, authorize_teacher, enhance_response_with_teacher_auth
+from authorizers import authorize_student, authorize_teacher, enhance_response_with_teacher_auth, \
+    authorize_student_or_teacher
 from helpers.image_service import ProfilePicUploader
 from repos.classes_repo import ClassesRepo
 from repos.students_repos import StudentRepo
@@ -11,7 +12,7 @@ teachers_service = Blueprint('teachers', __name__)
 
 @teachers_service.route('upload', methods=["POST"])
 def upload_image():
-    student = authorize_student(request)
+    authorize_student_or_teacher(request)
     image = request.files.get("image")
     if not image:
         return jsonify({"Response": "Not found :("})

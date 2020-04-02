@@ -24,7 +24,7 @@ def teacher_login():
     teacher = TeachersRepo.find_teacher_by_auth(auth_token)
     if not teacher:
         return abort(400)
-    res = redirect("/")
+    res = redirect("/classes/new")
     enhance_response_with_teacher_auth(res, teacher)
     return res
 
@@ -35,7 +35,7 @@ def login():
     student = StudentRepo.get_student_by_auth(auth_token)
     if not student:
         return abort(400)
-    res = redirect("/classes/new")
+    res = redirect("/")
     enhance_response_with_student_auth(res, student)
     return res
 

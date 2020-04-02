@@ -20,3 +20,7 @@ class Teacher(db.Model):
     @property
     def students(self):
         return db.session.query(Student).join(Klass).filter(Klass.teacher_id == self.id).all()
+
+    @property
+    def klass_id(self):
+        return self.klasses[0].id

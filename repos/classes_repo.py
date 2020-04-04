@@ -8,9 +8,10 @@ from models import Vote, Klass, Student
 
 class ClassesRepo(object):
     @classmethod
-    def create_class(cls, class_name):
-        klass = Klass(name=class_name)
+    def create_class(cls, class_name, teacher_id):
+        klass = Klass(title=class_name, teacher_id=teacher_id)
         db.session.add(klass)
+        db.session.commit()
         return klass
 
     @classmethod

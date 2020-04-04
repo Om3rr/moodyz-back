@@ -1,7 +1,7 @@
 import hashlib
 
 from app import db
-from models import Teacher
+from models import Teacher, Klass
 import os
 
 
@@ -33,3 +33,8 @@ class TeachersRepo(object):
         pepper = os.getenv("PASSWORD_PEPPER")
         better_pass = "{}{}{}".format(salt, password, pepper).encode("utf-8")
         return hashlib.sha256(better_pass).hexdigest()
+
+    @staticmethod
+    def get_class(teacher_id, klass_slug):
+        klass = db.session.query(Klass).filter(Klass.teacher_id == teacher_id, Klass.slug == klass_slug).first()
+        return klass

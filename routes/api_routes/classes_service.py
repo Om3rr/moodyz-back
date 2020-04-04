@@ -9,7 +9,7 @@ classes_service = Blueprint('/classes', __name__)
 
 @classes_service.route('/me', methods=["GET"])
 def show():
-    student = authorize_student_or_teacher(request)
+    student = authorize_student(request)
     klass_id = student.klass_id
     res = ClassesRepo.get_todays_response(klass_id)
     return jsonify({"students": res})

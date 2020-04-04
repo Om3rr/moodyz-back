@@ -36,6 +36,11 @@ class ProfilePicUploader(object):
         image_file = BytesIO()
         image.save(image_file, format=image.format or "PNG")
         image_data = image_file.getvalue()
+        transformation = [
+            {'width': 400, 'height': 400, 'gravity': "face", 'radius': "max", 'crop': "crop"},
+            {'width': 120, "height": 120, 'crop': "scale"}
+        ]
+        options["eager"]=transformation
         result = CloudinaryUploader.upload(image_data, **options)
         return result
 

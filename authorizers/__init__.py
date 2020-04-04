@@ -9,15 +9,16 @@ def authorize_student(request):
         raise Exception("Cant find student")
     return student
 
+
 def authorize_student_or_teacher(request):
     student_auth = request.cookies.get("student")
     student = StudentRepo.get_student_by_auth(student_auth)
     if student:
-        return student
+        return student, None
     teacher_auth = request.cookies.get("teacher")
     teacher = TeachersRepo.find_teacher_by_auth(teacher_auth)
     if teacher:
-        return teacher
+        return None, teacher
     raise Exception("Cant find student :(")
 
 

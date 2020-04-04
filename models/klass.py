@@ -20,4 +20,4 @@ class Klass(db.Model):
         return "/classes/{}".format(self.slug)
 
     def to_dict(self):
-        return dict(title=self.title, url=self.url)
+        return dict(title=self.title, url=self.url, slug=self.slug)

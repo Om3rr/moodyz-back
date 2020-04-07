@@ -55,6 +55,15 @@ class ClassesRepo(object):
         return students
 
     @classmethod
+    def get_votes(cls, klass_id, from_ts, to_ts):
+        q = db.session.query(Vote).filter(Vote.klass_id == klass_id)
+        if from_ts:
+            q = q.filter(Vote.pub_date >= from_ts)
+        if to_ts:
+            q = q.filter(Vote.pub_date <= to_ts)
+        return q.all()
+
+    @classmethod
     def get_todays_response(cls, klass_id):
         students = cls.get_klass_students(klass_id)
         votes = cls.get_todays_votes(klass_id)

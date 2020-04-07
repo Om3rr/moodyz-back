@@ -18,7 +18,7 @@ class Vote(db.Model):
 
     def to_dict(self):
         return dict(
-            student=self.student.to_dict(),
+            student=self.student_id,
             choice=self.choice,
             pub_date=self.pub_date
         )

@@ -5,7 +5,7 @@ from helpers.random_gen import RandomGen
 from models import Klass, Vote
 from repos.teachers_repo import TeachersRepo
 
-t1 = TeachersRepo.create_teacher(username="omer", password="shacham")
+t1 = TeachersRepo.create_teacher(username="hazil", password="debil")
 k1 = Klass(title="Test Class 1", teacher_id=t1.id)
 db.session.add(k1)
 db.session.commit()

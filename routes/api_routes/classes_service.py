@@ -40,7 +40,8 @@ def klass_analytics(klass_slug):
     if to_ts:
         to_ts = datetime.fromtimestamp(int(to_ts))
     votes = ClassesRepo.get_votes(klass.id, from_ts, to_ts)
-    result = VotesHelper.group_votes_by_student_and_enhance(votes, students)
+    dates_Array = VotesHelper.get_dates_array(from_ts, to_ts)
+    result = VotesHelper.group_votes_by_student_and_enhance(votes, students, dates_Array)
     return jsonify(result)
 
 

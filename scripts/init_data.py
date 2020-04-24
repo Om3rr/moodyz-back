@@ -1,4 +1,5 @@
 import random
+from datetime import date, datetime, timedelta
 
 from app import db
 from models import Teacher, Klass, Student, Vote
@@ -7,7 +8,7 @@ from repos.teachers_repo import TeachersRepo
 k = Klass(title="Test Class 1")
 db.session.add(k)
 db.session.commit()
-t = TeachersRepo.create_teacher(username="omerzz`", password="password")
+t = TeachersRepo.create_teacher(username="omerzzz", password="password")
 k.teacher_id = t.id
 
 names = """Teddie Manning
@@ -66,7 +67,9 @@ for i in range(10):
 db.session.commit()
 
 for s in ss:
-    v = Vote(student_id=s.id, klass_id=k.id, choice=random.choice([1, 2, 3]))
-    db.session.add(v)
+    for i in range(10):
+        pubdate = datetime.utcnow() - timedelta(days=i)
+        v = Vote(student_id=s.id, klass_id=k.id, pub_date=pubdate, choice=random.choice([1, 2, 3, 4,5]))
+        db.session.add(v)
 
 db.session.commit()

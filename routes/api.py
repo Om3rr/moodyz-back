@@ -1,13 +1,13 @@
 from flask import Blueprint, request, jsonify
 
-from authorizers import authorize_student
+from authorizers import authorize_student, enhance_response_with_teacher_auth
 from repos.classes_repo import ClassesRepo
+from repos.teachers_repo import TeachersRepo
 from routes.api_routes.students import student_service
 from routes.api_routes.teachers import teachers_service
 import routes.api_routes.classes_service
 
 api = Blueprint('/api', __name__)
-
 
 
 @api.route("/classes", methods=["POST"])
@@ -35,3 +35,16 @@ def vote(class_id):
     voter_name = content.get("name")
     ClassesRepo.vote(class_id, voter_choice, voter_name)
     return jsonify({"response": "OKAY :D"})
+
+
+@api.route("/login", methods=["POST"])
+def login():
+    content = request.json
+    username = content.get("username")
+    password = content.get("password")
+    teacher = TeachersRepo.find_teacher_by_username_password(username, password)
+    if not teacher:
+        return jsonify("Not found"), 404
+    response = jsonify({"teacher": teacher.to_dict()})
+    enhance_response_with_teacher_auth(response, teacher)
+    return response

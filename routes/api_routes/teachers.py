@@ -91,6 +91,7 @@ def delete_student(student_id):
 @teachers_service.route("/me", methods=["GET"])
 def me():
     teacher = authorize_teacher(request)
+    print(teacher)
     return jsonify({
         "teacher": teacher.to_dict(),
         "klasses": [klass.to_dict() for klass in teacher.klasses]

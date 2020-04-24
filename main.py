@@ -28,18 +28,6 @@ def teacher_login():
     enhance_response_with_teacher_auth(res, teacher)
     return res
 
-
-@app.route("/login", methods=["GET"])
-def login():
-    auth_token = request.args.get("pw")
-    student = StudentRepo.get_student_by_auth(auth_token)
-    if not student:
-        return abort(400)
-    res = redirect("/")
-    enhance_response_with_student_auth(res, student)
-    return res
-
-
 # Serve React App
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')

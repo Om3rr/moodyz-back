@@ -9,7 +9,7 @@ class StudentRepo(object):
 
     @classmethod
     def create_student(cls, name, picture, gender, klass_id):
-        s = db.session.query(Student).filter(Student.name == name).first()
+        s = db.session.query(Student).filter(Student.name == name).filter(Student.klass_id==klass_id).first()
         if s:
             raise Exception("Student name already exists")
         student = Student(name=name, gender=gender, klass_id=klass_id, picture_url=picture)

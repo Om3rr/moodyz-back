@@ -36,9 +36,9 @@ def klass_analytics(klass_slug):
     students = klass.students
     from_ts, to_ts = request.args.get("from_ts"), request.args.get("to_ts")
     if from_ts:
-        from_ts = datetime.fromtimestamp(int(from_ts), tz=timezone.utc)
+        from_ts = datetime.fromtimestamp(int(from_ts))
     if to_ts:
-        to_ts = datetime.fromtimestamp(int(to_ts), tz=timezone.utc)
+        to_ts = datetime.fromtimestamp(int(to_ts))
     votes = ClassesRepo.get_votes(klass.id, from_ts, to_ts)
     dates_Array = VotesHelper.get_dates_array(from_ts, to_ts)
     result = VotesHelper.group_votes_by_student_and_enhance(votes, students, dates_Array)

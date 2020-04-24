@@ -1,5 +1,8 @@
 import itertools
 from datetime import datetime, timedelta
+from pytz import timezone
+
+utctz = timezone("UTC")
 
 
 class VotesHelper(object):
@@ -9,7 +12,7 @@ class VotesHelper(object):
         grouped_votes = itertools.groupby(votes, key=lambda vote: vote.student_id)
         for student_id, group in grouped_votes:
             students_votes = [vote.to_dict() for vote in group]
-            s_date_array = [{}]*len(dates_array)
+            s_date_array = [{}] * len(dates_array)
             for v in students_votes:
                 key = dates_array.index(cls.get_date_by_timestamp(v.get("pub_date")))
                 s_date_array[key] = v
@@ -31,6 +34,8 @@ class VotesHelper(object):
     @classmethod
     def get_dates_array(cls, from_ts, to_ts):
         print(from_ts, to_ts)
+        from_ts = utctz.localize(from_ts)
+        to_ts = utctz.localize(to_ts)
         currentTs = from_ts
         to_ts = datetime.strptime(to_ts.strftime("%Y-%m-%d"), "%Y-%m-%d") - timedelta(hours=1)
         dates = []

@@ -32,7 +32,7 @@ class VotesHelper(object):
     def get_dates_array(cls, from_ts, to_ts):
         print(from_ts, to_ts)
         currentTs = from_ts
-        to_ts = datetime.strptime(to_ts.strftime("%Y-%m-%d"), "%Y-%m-%d") - timedelta(hours=23, minutes=59)
+        to_ts = datetime.strptime(to_ts.strftime("%Y-%m-%d"), "%Y-%m-%d") - timedelta(hours=1)
         dates = []
         dates.append(cls.get_date_by_timestamp(currentTs))
         while currentTs <= to_ts:

@@ -2,7 +2,7 @@ from sqlalchemy import desc
 from sqlalchemy.orm import lazyload
 
 from app import db
-from datetime import datetime
+from datetime import datetime, timedelta
 from models import Vote, Klass, Student
 
 
@@ -60,7 +60,7 @@ class ClassesRepo(object):
         if from_ts:
             q = q.filter(Vote.pub_date >= from_ts)
         if to_ts:
-            q = q.filter(Vote.pub_date <= to_ts)
+            q = q.filter(Vote.pub_date <= (to_ts + timedelta(days=1)))
         return q.all()
 
     @classmethod

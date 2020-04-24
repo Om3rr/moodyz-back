@@ -34,14 +34,10 @@ class VotesHelper(object):
     @classmethod
     def get_dates_array(cls, from_ts, to_ts):
         print(from_ts, to_ts)
-        from_ts = utctz.localize(from_ts)
-        to_ts = utctz.localize(to_ts)
         currentTs = from_ts
-        to_ts = datetime.strptime(to_ts.strftime("%Y-%m-%d"), "%Y-%m-%d") - timedelta(hours=1)
         dates = []
-        dates.append(cls.get_date_by_timestamp(currentTs))
         while currentTs <= to_ts:
-            currentTs += timedelta(days=1)
             dates.append(cls.get_date_by_timestamp(currentTs))
+            currentTs += timedelta(days=1)
         print(dates)
         return dates

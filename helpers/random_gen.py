@@ -62,7 +62,7 @@ class RandomGen(object):
 
     @classmethod
     def get_choice(cls):
-        return random.choice([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+        return random.choice([0, 200, 300, 400, 500, 600, 700, 800, 900])
 
     @classmethod
     def get_student(cls):

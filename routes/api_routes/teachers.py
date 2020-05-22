@@ -64,8 +64,8 @@ def create_student(class_slug):
     return jsonify({"student": student.to_dict(with_klass=False)})
 
 
-@teachers_service.route("/classes/<class_id>/students/<student_id>", methods=["PUT"])
-def edit_student(class_id, student_id):
+@teachers_service.route("/students/<student_id>", methods=["PUT"])
+def edit_student(student_id):
     teacher = authorize_teacher(request)
     body = request.json
     name = body.get("name")

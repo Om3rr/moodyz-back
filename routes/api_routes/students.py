@@ -17,27 +17,6 @@ def student_login():
     enhance_response_with_student_auth(res, student)
     return res
 
-
-@student_service.route("/", methods=["POST"])
-def create_student():
-    teacher = authorize_teacher(request)
-    student_json = request.json.get("student")
-    name = student_json.get("name")
-    picture_id = student_json.get("pictureId")
-    student = StudentRepo.create_student(name, picture_id, teacher.klasses[0].id)
-    return jsonify({"student": student.to_dict()})
-
-
-@student_service.route("/<student_id>", methods=["DELETE"])
-def delete_student(student_id):
-    teacher = authorize_teacher(request)
-    student_json = request.json.get("student")
-    name = student_json.get("name")
-    picture_id = student_json.get("pictureId")
-    student = StudentRepo.create_student(name, picture_id, teacher.klasses[0].id)
-    return jsonify({"student": student.to_dict()})
-
-
 @student_service.route("/me", methods=["GET"])
 def me():
     student = authorize_student(request)

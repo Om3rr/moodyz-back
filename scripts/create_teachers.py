@@ -5,7 +5,7 @@ from helpers.random_gen import RandomGen
 from models import Klass, Vote, Teacher
 from repos.teachers_repo import TeachersRepo
 
-t1 = TeachersRepo.create_teacher(username="מורה 4", password="ee8fe8ee8fe8ee8fe8")
+t1 = TeachersRepo.create_teacher(username="מורה 7", password="ee8fe8ee8fe8ee8fe8")
 k1 = Klass(title="Demo", teacher_id=t1.id)
 db.session.add(k1)
 db.session.commit()
@@ -26,4 +26,4 @@ for _ in range(10):
     db.session.commit()
 
 print("You can invite a teacher with the following url")
-print("http://moodyzz.herokuapp.com/teachers/login?pw={}".format(t1.auth_token))
+print("https://moodyzz.herokuapp.com/teachers/login?pw={}".format(t1.auth_token))

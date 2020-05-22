@@ -37,4 +37,6 @@ class Student(db.Model):
 
     @property
     def face_url(self):
-        return ProfilePicFetcher.fetch(self.picture_url or "punbxmop1chipuxaylrs.png")
+        if not self.picture_url:
+            return
+        return ProfilePicFetcher.fetch(self.picture_url)
